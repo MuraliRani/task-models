@@ -1,28 +1,32 @@
 module.exports = (sequelize, DataTypes) => {
-  const Order = sequelize.define("Order", {
-    OrderID: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    CustomerID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Customer",
-        key: "CustomerID",
+  const Order = sequelize.define(
+    "Order",
+    {
+      OrderID: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
       },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
+      CustomerID: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Customer",
+          key: "CustomerID",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      OrderD: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
     },
-    OrderD: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-  }, {
-    tableName: "Order",
-    timestamps: true,
-  });
+    {
+      tableName: "Order",
+      timestamps: true,
+    }
+  );
 
   Order.synchronize = async (options = { alter: true }) => {
     try {

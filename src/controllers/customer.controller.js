@@ -3,6 +3,13 @@ const Customer = db.Customer;
 
 // Create a new Customer
 exports.create = async (req, res) => {
+  //Added validation here
+  if (!req.body.FirstName || !req.body.LastName || !req.body.Email) {
+    return res.status(400).json({
+      message: 'FirstName, LastName, and Email are required fields.'
+    });
+  }
+
   try {
     const customer = await Customer.create(req.body);
     res.status(201).json(customer);
@@ -29,6 +36,11 @@ exports.findAll = async (req, res) => {
 exports.findOne = async (req, res) => {
   const id = req.params.id;
 
+  //Validation for ID
+  if (!id || isNaN(id)) {
+    return res.status(400).json({ message: 'Valid Customer ID is required.' });
+  }
+
   try {
     const customer = await Customer.findByPk(id);
     if (customer) {
@@ -48,6 +60,14 @@ exports.findOne = async (req, res) => {
 // Update a Customer by the id
 exports.update = async (req, res) => {
   const id = req.params.id;
+
+  //Validation for ID and request body
+  if (!id || isNaN(id)) {
+    return res.status(400).json({ message: 'Valid Customer ID is required.' });
+  }
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res.status(400).json({ message: 'Request body cannot be empty.' });
+  }
 
   try {
     const [num] = await Customer.update(req.body, {
@@ -74,6 +94,11 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   const id = req.params.id;
 
+  //Validation for ID
+  if (!id || isNaN(id)) {
+    return res.status(400).json({ message: 'Valid Customer ID is required.' });
+  }
+
   try {
     const num = await Customer.destroy({
       where: { CustomerID: id }
@@ -98,7 +123,9 @@ exports.delete = async (req, res) => {
 // Get customers who purchased a particular product by product name
 exports.findCustomersByProductName = async (req, res) => {
   const { productName } = req.query;
-  if (!productName) {
+
+  //Validation for query param
+  if (!productName || productName.trim() === '') {
     return res.status(400).json({ message: "Product name is required." });
   }
 
@@ -107,20 +134,19 @@ exports.findCustomersByProductName = async (req, res) => {
     const customers = await db.Customer.findAll({
       include: [{
         model: db.Order,
-        as: 'orders', // alias from index.js
+        as: 'orders',
         include: [{
           model: db.OrderDetail,
-          as: 'OrderDetails', // alias from index.js
+          as: 'OrderDetails',
           include: [{
             model: db.Product,
-            as: 'product', // alias from index.js
+            as: 'product',
             where: { ProductName: productName }
           }]
         }]
       }]
     });
 
-    // Filter customers who have at least one matching order detail
     const filteredCustomers = customers
       .filter(customer =>
         customer.orders.some(order =>

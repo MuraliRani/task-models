@@ -1,4 +1,4 @@
-const db = require('../models');
+const db = require("../models");
 const Category = db.Category;
 
 // Create a new Category
@@ -8,7 +8,8 @@ exports.create = async (req, res) => {
     res.status(201).json(category);
   } catch (error) {
     res.status(500).json({
-      message: error.message || 'Some error occurred while creating the Category.'
+      message:
+        error.message || "Some error occurred while creating the Category.",
     });
   }
 };
@@ -20,7 +21,8 @@ exports.findAll = async (req, res) => {
     res.status(200).json(categories);
   } catch (error) {
     res.status(500).json({
-      message: error.message || 'Some error occurred while retrieving categories.'
+      message:
+        error.message || "Some error occurred while retrieving categories.",
     });
   }
 };
@@ -35,12 +37,12 @@ exports.findOne = async (req, res) => {
       res.status(200).json(category);
     } else {
       res.status(404).json({
-        message: `Cannot find Category with id=${id}.`
+        message: `Cannot find Category with id=${id}.`,
       });
     }
   } catch (error) {
     res.status(500).json({
-      message: `Error retrieving Category with id=${id}`
+      message: `Error retrieving Category with id=${id}`,
     });
   }
 };
