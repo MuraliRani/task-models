@@ -1,7 +1,7 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const db = require('./models');
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const db = require("./models");
 
 const app = express();
 
@@ -15,21 +15,23 @@ app.use(express.urlencoded({ extended: true }));
 // This will update the database schema when new columns are added to models
 db.synchronizeAllModels({ alter: true })
   .then(() => {
-    console.log('Database schema is up to date with all model definitions.');
+    console.log("Database schema is up to date with all model definitions.");
   })
-  .catch(err => {
-    console.error('Failed to sync database:', err.message);
+  .catch((err) => {
+    console.error("Failed to sync database:", err.message);
   });
 
 // Simple route
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to the E-commerce API.' });
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the E-commerce API." });
 });
 
 // Include routes
-require('./routes/customer.routes')(app);
-require('./routes/product.routes')(app);
-require('./routes/category.routes')(app);
+require("./routes/customer.routes")(app);
+require("./routes/product.routes")(app);
+require("./routes/category.routes")(app);
+require("./routes/order.routes")(app);
+require("./routes/orderDetail.routes")(app);
 
 // Set port and listen for requests
 const PORT = process.env.PORT || 3000;

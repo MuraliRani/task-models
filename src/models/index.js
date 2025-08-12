@@ -72,7 +72,7 @@ db.Order.belongsTo(db.Customer, {
 // Order - OrderDetail (One-to-Many)
 db.Order.hasMany(db.OrderDetail, {
   foreignKey: 'OrderID',
-  as: 'orderDetails'
+  as: 'OrderDetails'
 });
 db.OrderDetail.belongsTo(db.Order, {
   foreignKey: 'OrderID',

@@ -1,14 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
-  const Category = sequelize.define("Category", {
-    CategoryID: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  const Category = sequelize.define(
+    "Category",
+    {
+      CategoryID: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
     },
-  }, {
-    tableName: "Category",
-    timestamps: true,
-  });
+    {
+      tableName: "Category",
+      timestamps: true,
+    }
+  );
 
   Category.synchronize = async (options = { alter: true }) => {
     try {

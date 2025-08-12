@@ -94,3 +94,52 @@ exports.delete = async (req, res) => {
     });
   }
 };
+
+// Get customers who purchased a particular product by product name
+exports.findCustomersByProductName = async (req, res) => {
+  const { productName } = req.query;
+  if (!productName) {
+    return res.status(400).json({ message: "Product name is required." });
+  }
+
+  try {
+    const db = require('../models');
+    const customers = await db.Customer.findAll({
+      include: [{
+        model: db.Order,
+        as: 'orders', // alias from index.js
+        include: [{
+          model: db.OrderDetail,
+          as: 'OrderDetails', // alias from index.js
+          include: [{
+            model: db.Product,
+            as: 'product', // alias from index.js
+            where: { ProductName: productName }
+          }]
+        }]
+      }]
+    });
+
+    // Filter customers who have at least one matching order detail
+    const filteredCustomers = customers
+      .filter(customer =>
+        customer.orders.some(order =>
+          order.OrderDetails.some(detail =>
+            detail.product && detail.product.ProductName === productName
+          )
+        )
+      )
+      .map(customer => ({
+        CustomerID: customer.CustomerID,
+        FirstName: customer.FirstName,
+        LastName: customer.LastName,
+        Email: customer.Email
+      }));
+
+    res.status(200).json(filteredCustomers);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message || 'Some error occurred while fetching customers by product name.'
+    });
+  }
+};
