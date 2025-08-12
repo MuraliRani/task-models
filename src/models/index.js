@@ -39,16 +39,6 @@ db.Product.belongsTo(db.Category, {
   as: 'category'
 });
 
-// Additional alias for Category - Product
-db.Category.hasMany(db.Product, {
-  foreignKey: 'CategoryID',
-  as: 'categoryProducts'
-});
-db.Product.belongsTo(db.Category, {
-  foreignKey: 'CategoryID',
-  as: 'productCategory'
-});
-
 // Customer - Order (One-to-Many)
 db.Customer.hasMany(db.Order, {
   foreignKey: 'CustomerID',
@@ -57,16 +47,6 @@ db.Customer.hasMany(db.Order, {
 db.Order.belongsTo(db.Customer, {
   foreignKey: 'CustomerID',
   as: 'customer'
-});
-
-// Additional alias for Customer - Order
-db.Customer.hasMany(db.Order, {
-  foreignKey: 'CustomerID',
-  as: 'customerOrders'
-});
-db.Order.belongsTo(db.Customer, {
-  foreignKey: 'CustomerID',
-  as: 'orderCustomer'
 });
 
 // Order - OrderDetail (One-to-Many)
@@ -79,16 +59,6 @@ db.OrderDetail.belongsTo(db.Order, {
   as: 'order'
 });
 
-// Additional alias for Order - OrderDetail
-db.Order.hasMany(db.OrderDetail, {
-  foreignKey: 'OrderID',
-  as: 'items'
-});
-db.OrderDetail.belongsTo(db.Order, {
-  foreignKey: 'OrderID',
-  as: 'parentOrder'
-});
-
 // Product - OrderDetail (One-to-Many)
 db.Product.hasMany(db.OrderDetail, {
   foreignKey: 'ProductID',
@@ -97,16 +67,6 @@ db.Product.hasMany(db.OrderDetail, {
 db.OrderDetail.belongsTo(db.Product, {
   foreignKey: 'ProductID',
   as: 'product'
-});
-
-// Additional alias for Product - OrderDetail
-db.Product.hasMany(db.OrderDetail, {
-  foreignKey: 'ProductID',
-  as: 'purchases'
-});
-db.OrderDetail.belongsTo(db.Product, {
-  foreignKey: 'ProductID',
-  as: 'orderedProduct'
 });
 
 // Synchronize all models individually
