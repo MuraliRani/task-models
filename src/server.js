@@ -13,13 +13,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Sync database with { alter: true } for development
 // This will update the database schema when new columns are added to models
-db.synchronizeAllModels({ alter: true })
-  .then(() => {
-    console.log("Database schema is up to date with all model definitions.");
-  })
-  .catch((err) => {
-    console.error("Failed to sync database:", err.message);
-  });
+// db.synchronizeAllModels({ alter: true })
+//   .then(() => {
+//     console.log("Database schema is up to date with all model definitions.");
+//   })
+//   .catch((err) => {
+//     console.error("Failed to sync database:", err.message);
+//   });
 
 // Simple route
 app.get("/", (req, res) => {
